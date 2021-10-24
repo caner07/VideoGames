@@ -1,29 +1,24 @@
 //
-//  GamesModel.swift
+//  GameDetailsModel.swift
 //  VideoGames
 //
-//  Created by Caner on 23.10.2021.
+//  Created by Caner on 24.10.2021.
 //
 
 import Foundation
 
-struct GamesResponseModel:Codable{
-    let results:[GamesModel]?
-}
-
-
-
-struct GamesModel:Codable{
+struct GameDetailsModel:Codable{
     enum CodingKeys:String,CodingKey{
-        case id
         case name
+        case description
+        case metacritic
         case released
         case imageUrl = "background_image"
-        case rating
     }
-    let id:Int?
+    
     let name:String?
+    let description:String?
+    let metacritic:Int?
     let released:String?
     let imageUrl:String?
-    let rating:Double?
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class HeaderCollectionViewCell: UICollectionViewCell {
     static let headerCellId = "headercell"
@@ -27,9 +28,13 @@ class HeaderCollectionViewCell: UICollectionViewCell {
             
         ])
     }
-    func set(){
-        slideImage.image = UIImage(named: "gta")
+    func set(game:GamesModel?){
+        guard let game = game else{return}
+        guard let url = URL(string: game.imageUrl ?? "") else{return}
+        slideImage.kf.indicatorType = .activity
+        slideImage.kf.setImage(with: url)
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

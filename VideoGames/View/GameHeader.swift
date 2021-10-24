@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol GameHeaderDelegate{
+    func didSelectGame(game:GamesModel?)
+}
+
 class GameHeader:UICollectionReusableView{
     
     static let gameHeaderIdentifier = "gameheader"
     var sliderCollectionView:UICollectionView!
+    var headerGames = [GamesModel?]()
+    var delegate:GameHeaderDelegate?
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -29,7 +35,10 @@ class GameHeader:UICollectionReusableView{
         sliderCollectionView.delegate = self
         sliderCollectionView.dataSource = self
         sliderCollectionView.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: HeaderCollectionViewCell.headerCellId)
-        
+    }
+    func set(games:[GamesModel?]){
+        self.headerGames = games
+        self.sliderCollectionView.reloadData()
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -37,13 +46,20 @@ class GameHeader:UICollectionReusableView{
 }
 extension GameHeader:UICollectionViewDelegate,UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return headerGames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HeaderCollectionViewCell.headerCellId, for: indexPath) as! HeaderCollectionViewCell
-        cell.set()
+        let game = headerGames[indexPath.row]
+        cell.set(game: game)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let selectedGame = headerGames[indexPath.row]
+        delegate?.didSelectGame(game: selectedGame)
     }
     
     

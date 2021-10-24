@@ -12,6 +12,8 @@ class GamesTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UITabBar.appearance().tintColor = .systemTeal
+        UITabBar.appearance().isOpaque = true
+        UITabBar.appearance().isTranslucent = false
         viewControllers = [createHomeVC(),createFavoritesVC()]
         
     }
