@@ -40,6 +40,9 @@ class GameDetailsViewController: UIViewController {
         let managedContext = appDelegate.persistentContainer.viewContext
         isLiked = viewModel.isFavorite(context: managedContext)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
     func configureScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false

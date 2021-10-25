@@ -11,7 +11,7 @@ class HomeViewController: UIViewController {
     var searchBar:UISearchBar!
     var gamesCollectionView : UICollectionView!
     var containerView = UIView()
-    
+    var notFoundLabel = UILabel()
     private let refreshControl = UIRefreshControl()
     var isSearching = false
     let viewModel = HomeViewModel()
@@ -29,7 +29,26 @@ class HomeViewController: UIViewController {
         
         configureCollectionView()
         configureSearchBar()
+        configureNotFoundLabel()
         
+    }
+    private func configureNotFoundLabel(){
+        notFoundLabel.textAlignment = .center
+        notFoundLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        notFoundLabel.textColor = .label
+        notFoundLabel.numberOfLines = 0
+        notFoundLabel.translatesAutoresizingMaskIntoConstraints = false
+        notFoundLabel.text = "Sorry, we couldn't find your game :("
+        view.addSubview(notFoundLabel)
+        NSLayoutConstraint.activate([
+            notFoundLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            notFoundLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            notFoundLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            notFoundLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            notFoundLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            notFoundLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        notFoundLabel.isHidden = true
     }
     private func configureSearchBar(){
         searchBar = UISearchBar()
@@ -100,6 +119,15 @@ class HomeViewController: UIViewController {
     }
     @objc private func refresh(_ sender: Any) {
         viewModel.getGames()
+    }
+    
+    func showNotFound(){
+        gamesCollectionView.isHidden = true
+        notFoundLabel.isHidden = false
+    }
+    func showGames(){
+        gamesCollectionView.isHidden = false
+        notFoundLabel.isHidden = true
     }
 
 }
@@ -191,9 +219,11 @@ extension HomeViewController:HomeViewModelDelegate{
     func success() {
         DispatchQueue.main.async {
             self.dismissLoadingView()
+            self.showGames()
             self.gamesCollectionView.reloadData()
             self.refreshControl.endRefreshing()
-        }
+            }
+        
     }
     func error(error: ErrorTypes) {
         DispatchQueue.main.async {
@@ -204,6 +234,11 @@ extension HomeViewController:HomeViewModelDelegate{
         }
     }
     func searchUpdate() {
+        if viewModel.filteredGameList?.count ?? 0 == 0 {
+            showNotFound()
+        }else{
+            showGames()
+        }
         gamesCollectionView.reloadData()
     }
 }

@@ -11,6 +11,7 @@ class FavoritesViewController: UIViewController {
     var gamesCollectionView : UICollectionView!
     var searchBar:UISearchBar!
     var containerView = UIView()
+    var notFoundLabel = UILabel()
     let viewModel = FavoritesViewModel()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ class FavoritesViewController: UIViewController {
         
         configureCollectionView()
         configureSearchBar()
+        configureNotFoundLabel()
     }
     private func configureSearchBar(){
         searchBar = UISearchBar()
@@ -33,6 +35,24 @@ class FavoritesViewController: UIViewController {
         
         searchBar.delegate = self
         navigationItem.titleView = searchBar
+    }
+    private func configureNotFoundLabel(){
+        notFoundLabel.textAlignment = .center
+        notFoundLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        notFoundLabel.textColor = .label
+        notFoundLabel.numberOfLines = 0
+        notFoundLabel.translatesAutoresizingMaskIntoConstraints = false
+        notFoundLabel.text = "Sorry, we couldn't find your game :("
+        view.addSubview(notFoundLabel)
+        NSLayoutConstraint.activate([
+            notFoundLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            notFoundLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            notFoundLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            notFoundLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            notFoundLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            notFoundLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        notFoundLabel.isHidden = true
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -54,6 +74,14 @@ class FavoritesViewController: UIViewController {
         gamesCollectionView.delegate = self
         gamesCollectionView.dataSource = self
         gamesCollectionView.register(GamesCellCollectionViewCell.self, forCellWithReuseIdentifier: GamesCellCollectionViewCell.reuseID)
+    }
+    func showNotFound(){
+        gamesCollectionView.isHidden = true
+        notFoundLabel.isHidden = false
+    }
+    func showGames(){
+        gamesCollectionView.isHidden = false
+        notFoundLabel.isHidden = true
     }
 }
 //MARK: - Collection View
@@ -97,6 +125,11 @@ extension FavoritesViewController:UISearchBarDelegate{
 extension FavoritesViewController:FavoritesViewModelDelegate{
     func reload() {
         DispatchQueue.main.async {
+            if self.viewModel.filteredGameList?.count ?? 0 == 0 {
+                self.showNotFound()
+            }else{
+                self.showGames()
+            }
             self.gamesCollectionView.reloadData()
         }
     }
