@@ -56,9 +56,19 @@ class FavoritesViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Anasayfadan favorilere ekleyip buraya geçiş yapıldığında her seferinde yenilenmesi lazım o yüzden will appear içinde sayfayı yeniliyoruz.
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
         let managedContext = appDelegate.persistentContainer.viewContext
         viewModel.getFavoriteGames(managedContext)
+        
+        // Favoriler ekranında search edip bir oyun seçilir ve geri dönülürse tekrar bütün oyunlar çağırılıyor o yüzden search işlemini tekrar yaptırmamız lazım.
+        if let searchText = self.searchBar.text{
+            if !searchText.isEmpty {
+                viewModel.searchInFavorites(managedContext, searchText)
+            }
+        }
+        
     }
     private func configureCollectionView(){
         

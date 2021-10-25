@@ -32,60 +32,7 @@ class HomeViewController: UIViewController {
         configureNotFoundLabel()
         
     }
-    private func configureNotFoundLabel(){
-        notFoundLabel.textAlignment = .center
-        notFoundLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        notFoundLabel.textColor = .label
-        notFoundLabel.numberOfLines = 0
-        notFoundLabel.translatesAutoresizingMaskIntoConstraints = false
-        notFoundLabel.text = "Sorry, we couldn't find your game :("
-        view.addSubview(notFoundLabel)
-        NSLayoutConstraint.activate([
-            notFoundLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            notFoundLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            notFoundLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            notFoundLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            notFoundLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            notFoundLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-        notFoundLabel.isHidden = true
-    }
-    private func configureSearchBar(){
-        searchBar = UISearchBar()
-        searchBar.searchBarStyle = UISearchBar.Style.default
-        searchBar.placeholder = "Search..."
-        searchBar.sizeToFit()
-        
-        searchBar.delegate = self
-        navigationItem.titleView = searchBar
-    }
-    func showLoadingView() {
-        containerView = UIView(frame: view.bounds)
-        view.addSubview(containerView)
-        
-        containerView.backgroundColor = .systemBackground
-        containerView.alpha = 0
-        
-        UIView.animate(withDuration: 0.25) { self.containerView.alpha = 0.8 }
-        
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        containerView.addSubview(activityIndicator)
-        
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
-        ])
-        activityIndicator.startAnimating()
-    }
     
-    func dismissLoadingView() {
-        DispatchQueue.main.async {
-            self.containerView.removeFromSuperview()
-            
-        }
-    }
     
     private func configureCollectionView(){
         
@@ -117,10 +64,73 @@ class HomeViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
         refreshControl.tintColor = .gray
     }
+    
     @objc private func refresh(_ sender: Any) {
         viewModel.getGames()
     }
     
+    
+    private func configureNotFoundLabel(){
+        notFoundLabel.textAlignment = .center
+        notFoundLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        notFoundLabel.textColor = .label
+        notFoundLabel.numberOfLines = 0
+        notFoundLabel.translatesAutoresizingMaskIntoConstraints = false
+        notFoundLabel.text = "Sorry, we couldn't find your game :("
+        view.addSubview(notFoundLabel)
+        NSLayoutConstraint.activate([
+            notFoundLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            notFoundLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            notFoundLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            notFoundLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            notFoundLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            notFoundLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        notFoundLabel.isHidden = true
+    }
+    
+    
+    private func configureSearchBar(){
+        searchBar = UISearchBar()
+        searchBar.searchBarStyle = UISearchBar.Style.default
+        searchBar.placeholder = "Search..."
+        searchBar.sizeToFit()
+        
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
+    }
+    
+    //MARK: - Loading
+    func showLoadingView() {
+        containerView = UIView(frame: view.bounds)
+        view.addSubview(containerView)
+        
+        containerView.backgroundColor = .systemBackground
+        containerView.alpha = 0
+        
+        UIView.animate(withDuration: 0.25) { self.containerView.alpha = 0.8 }
+        
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        containerView.addSubview(activityIndicator)
+        
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
+        ])
+        activityIndicator.startAnimating()
+    }
+    
+    func dismissLoadingView() {
+        DispatchQueue.main.async {
+            self.containerView.removeFromSuperview()
+            
+        }
+    }
+    
+    
+    //MARK: - Not Found
     func showNotFound(){
         gamesCollectionView.isHidden = true
         notFoundLabel.isHidden = false
