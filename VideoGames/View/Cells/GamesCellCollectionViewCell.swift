@@ -27,6 +27,14 @@ class GamesCellCollectionViewCell: UICollectionViewCell {
         
         
     }
+    func set(game:Game?){
+        guard let game = game else{return}
+        gameNameLabel.text = game.name
+        ratingAndReleasedLabel.text = "Rating:\(game.rating ) \nRelease Date:\(game.released ?? "")"
+        guard let url = URL(string: game.imageUrl ?? "") else{return}
+        gameImage.kf.indicatorType = .activity
+        gameImage.kf.setImage(with: url)
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -72,7 +80,7 @@ class GamesCellCollectionViewCell: UICollectionViewCell {
             ratingAndReleasedLabel.topAnchor.constraint(equalTo: gameNameLabel.bottomAnchor,constant: padding),
             ratingAndReleasedLabel.leadingAnchor.constraint(equalTo: gameNameLabel.leadingAnchor),
             ratingAndReleasedLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -padding),
-            ratingAndReleasedLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant:padding)
+            ratingAndReleasedLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant:-padding)
         ])
     }
 }

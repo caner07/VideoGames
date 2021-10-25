@@ -31,7 +31,12 @@ class GameHeader:UICollectionReusableView{
         flowLayout.itemSize = CGSize(width: width, height: height)
         sliderCollectionView = UICollectionView(frame: self.bounds,collectionViewLayout: flowLayout)
         sliderCollectionView.isPagingEnabled = true
+        sliderCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sliderCollectionView)
+        sliderCollectionView.alwaysBounceHorizontal = true
+        
+        
+        
         sliderCollectionView.delegate = self
         sliderCollectionView.dataSource = self
         sliderCollectionView.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: HeaderCollectionViewCell.headerCellId)

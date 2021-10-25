@@ -12,8 +12,7 @@ class GamesTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UITabBar.appearance().tintColor = .systemTeal
-        UITabBar.appearance().isOpaque = true
-        UITabBar.appearance().isTranslucent = false
+       
         viewControllers = [createHomeVC(),createFavoritesVC()]
         
     }
@@ -21,7 +20,7 @@ class GamesTabBarController: UITabBarController {
     func createHomeVC() -> UINavigationController {
         let homeVC = HomeViewController()
         homeVC.title = "Home"
-        let homeIcon = UIImage(systemName: "house")
+        let homeIcon = UIImage(systemName: Images.houseIcon)
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: homeIcon, tag: 0)
         
         return UINavigationController(rootViewController: homeVC)
@@ -29,7 +28,7 @@ class GamesTabBarController: UITabBarController {
     func createFavoritesVC() -> UINavigationController {
         let favoritesVC = FavoritesViewController()
         favoritesVC.title = "Favorites"
-        let favoritesIcon = UIImage(systemName: "star")
+        let favoritesIcon = UIImage(systemName: Images.favoritesIcon)
         favoritesVC.tabBarItem = UITabBarItem(title: "Favorites", image: favoritesIcon, tag: 1)
         
         return UINavigationController(rootViewController: favoritesVC)

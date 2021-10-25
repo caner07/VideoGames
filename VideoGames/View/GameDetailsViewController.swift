@@ -20,9 +20,12 @@ class GameDetailsViewController: UIViewController {
     var isLiked = false
     let viewModel = GameDetailsViewModel()
     
-    init(gameId:Int){
+    init(gameId:Int,rating:Double){
         super.init(nibName: nil, bundle: nil)
         viewModel.gameId = gameId
+        
+        // veritabanına kayıtta rating de lazım ama game details modelinde rating değil metacritic tutuluyor bu yüzden ratingi anasayfadan gelirken almamız lazım.
+        viewModel.rating = rating
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -33,6 +36,9 @@ class GameDetailsViewController: UIViewController {
         configure()
         viewModel.delegate = self
         viewModel.getGameDetails()
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
+        let managedContext = appDelegate.persistentContainer.viewContext
+        isLiked = viewModel.isFavorite(context: managedContext)
     }
     func configureScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,23 +117,29 @@ class GameDetailsViewController: UIViewController {
             descriptionLabel.topAnchor.constraint(equalTo: metacriticLabel.bottomAnchor, constant: padding),
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,constant: padding),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,constant: -padding),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: padding)
+            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
         ])
        
         
     }
     
     @objc func likeButtonTapped(){
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
+        let managedContext = appDelegate.persistentContainer.viewContext
         if isLiked {
+            viewModel.deleteFromFavorites(context: managedContext)
             let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold, scale: .default)
-            let image = UIImage(systemName: "star", withConfiguration: config)
+            let image = UIImage(systemName: Images.emptyStarIcon, withConfiguration: config)
             likeButton.setImage(image, for: .normal)
         }else{
+            
+            viewModel.addToFavorites(managedContext)
             let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold, scale: .default)
-            let image = UIImage(systemName: "star.fill", withConfiguration: config)
+            let image = UIImage(systemName: Images.filledStarIcon, withConfiguration: config)
             likeButton.setImage(image, for: .normal)
         }
         isLiked.toggle()
+        
     }
     
     private func updateUI(){
@@ -191,6 +203,12 @@ extension GameDetailsViewController:GameDetailsViewModelDelegate{
             self.present(alert,animated: true)
         }
         
+    }
+    func addedToFavorites() {
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold, scale: .default)
+        let image = UIImage(systemName: Images.filledStarIcon, withConfiguration: config)
+        likeButton.setImage(image, for: .normal)
+        isLiked = true
     }
     
     

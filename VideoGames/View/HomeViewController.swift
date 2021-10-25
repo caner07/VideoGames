@@ -79,11 +79,12 @@ class HomeViewController: UIViewController {
         gamesCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
         gamesCollectionView.keyboardDismissMode = .onDrag
         view.addSubview(gamesCollectionView)
+        gamesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             gamesCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             gamesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             gamesCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            gamesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: 40)
+            gamesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -padding)
         ])
         gamesCollectionView.delegate = self
         gamesCollectionView.dataSource = self
@@ -91,6 +92,7 @@ class HomeViewController: UIViewController {
         gamesCollectionView.register(GamesCellCollectionViewCell.self, forCellWithReuseIdentifier: GamesCellCollectionViewCell.reuseID)
         gamesCollectionView.register(GameHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: GameHeader.gameHeaderIdentifier)
         
+        gamesCollectionView.alwaysBounceVertical = true
         gamesCollectionView.refreshControl = refreshControl
         
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
@@ -107,6 +109,7 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
         if isSearching{
             return viewModel.filteredGameList?.count ?? 0
         }
+        
         return (viewModel.filteredGameList?.count ?? 3)-3
     }
     
@@ -153,7 +156,7 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
             selectedGame = viewModel.filteredGameList?[indexPath.row+3]
         }
         
-        let vc = GameDetailsViewController(gameId: selectedGame?.id ?? 0)
+        let vc = GameDetailsViewController(gameId: selectedGame?.id ?? 0,rating: selectedGame.rating ?? 0.0 )
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -207,7 +210,7 @@ extension HomeViewController:HomeViewModelDelegate{
 //MARK: - Header Protocol
 extension HomeViewController:GameHeaderDelegate{
     func didSelectGame(game: GamesModel?) {
-        let vc = GameDetailsViewController(gameId: game?.id ?? 0)
+        let vc = GameDetailsViewController(gameId: game?.id ?? 0,rating: game?.rating ?? 0.0)
         self.navigationController?.pushViewController(vc, animated: true)
     
     }
