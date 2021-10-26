@@ -95,7 +95,7 @@ class HomeViewController: UIViewController {
         searchBar.searchBarStyle = UISearchBar.Style.default
         searchBar.placeholder = "Search..."
         searchBar.sizeToFit()
-        
+        setDoneOnKeyboard()
         searchBar.delegate = self
         navigationItem.titleView = searchBar
     }
@@ -195,7 +195,21 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
         }
         
         let vc = GameDetailsViewController(gameId: selectedGame?.id ?? 0,rating: selectedGame.rating ?? 0.0 )
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
+    func setDoneOnKeyboard() {
+        let keyboardToolbar = UIToolbar()
+        keyboardToolbar.sizeToFit()
+        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
+        keyboardToolbar.items = [flexBarButton, doneBarButton]
+        self.searchBar.inputAccessoryView = keyboardToolbar
+    }
+
+    @objc func dismissKeyboard() {
+        self.searchBar.endEditing(true)
     }
     
     
@@ -255,8 +269,9 @@ extension HomeViewController:HomeViewModelDelegate{
 //MARK: - Header Protocol
 extension HomeViewController:GameHeaderDelegate{
     func didSelectGame(game: GamesModel?) {
-        let vc = GameDetailsViewController(gameId: game?.id ?? 0,rating: game?.rating ?? 0.0)
-        self.navigationController?.pushViewController(vc, animated: true)
+        let vc = GameDetailsViewController(gameId: game?.id ?? 0,rating: game?.rating ?? 0.0 )
+        navigationController?.pushViewController(vc, animated: true)
+    
     
     }
 }

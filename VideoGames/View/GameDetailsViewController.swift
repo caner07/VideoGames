@@ -36,12 +36,13 @@ class GameDetailsViewController: UIViewController {
         configure()
         viewModel.delegate = self
         viewModel.getGameDetails()
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
-        let managedContext = appDelegate.persistentContainer.viewContext
-        isLiked = viewModel.isFavorite(context: managedContext)
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
+        let managedContext = appDelegate.persistentContainer.viewContext
+        isLiked = viewModel.isFavorite(context: managedContext)
     }
     func configureScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,7 +64,6 @@ class GameDetailsViewController: UIViewController {
     
     private func configure(){
         view.backgroundColor = .systemBackground
-        
         releaseDateLabel.textAlignment = .left
         releaseDateLabel.font = UIFont.systemFont(ofSize: 16)
         releaseDateLabel.textColor = .label

@@ -32,7 +32,7 @@ class FavoritesViewController: UIViewController {
         searchBar.searchBarStyle = UISearchBar.Style.default
         searchBar.placeholder = "Search..."
         searchBar.sizeToFit()
-        
+        setDoneOnKeyboard()
         searchBar.delegate = self
         navigationItem.titleView = searchBar
     }
@@ -93,6 +93,20 @@ class FavoritesViewController: UIViewController {
         gamesCollectionView.isHidden = false
         notFoundLabel.isHidden = true
     }
+    
+    
+    func setDoneOnKeyboard() {
+        let keyboardToolbar = UIToolbar()
+        keyboardToolbar.sizeToFit()
+        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
+        keyboardToolbar.items = [flexBarButton, doneBarButton]
+        self.searchBar.inputAccessoryView = keyboardToolbar
+    }
+
+    @objc func dismissKeyboard() {
+        self.searchBar.endEditing(true)
+    }
 }
 //MARK: - Collection View
 extension FavoritesViewController:UICollectionViewDelegate,UICollectionViewDataSource{
@@ -108,8 +122,8 @@ extension FavoritesViewController:UICollectionViewDelegate,UICollectionViewDataS
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedGame = viewModel.filteredGameList?[indexPath.row]
-        let vc = GameDetailsViewController(gameId: Int(selectedGame?.id ?? 0),rating: selectedGame?.rating ?? 0.0 )
-        self.navigationController?.pushViewController(vc, animated: true)
+        let destvc = GameDetailsViewController(gameId: Int(selectedGame?.id ?? 0),rating: selectedGame?.rating ?? 0.0 )
+        navigationController?.pushViewController(destvc, animated: true)
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.searchBar.resignFirstResponder()
