@@ -8,6 +8,8 @@ target 'VideoGames' do
   # Pods for VideoGames
 	pod 'Alamofire'
 	pod 'Kingfisher'
+	pod 'Firebase/Analytics'
+	pod 'Firebase/Crashlytics'
   target 'VideoGamesTests' do
     inherit! :search_paths
     # Pods for testing

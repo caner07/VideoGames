@@ -28,6 +28,7 @@
 		25AB03C227272BA100152880 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AB03C127272BA100152880 /* Constants.swift */; };
 		25D166A72722E9A100AA21A3 /* GameHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D166A62722E9A100AA21A3 /* GameHeader.swift */; };
 		25D166A92722FFAD00AA21A3 /* HeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D166A82722FFAD00AA21A3 /* HeaderCollectionViewCell.swift */; };
+		25DF09F4272888A900BF300F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25DF09F3272888A900BF300F /* GoogleService-Info.plist */; };
 		25E791B927242787004CE186 /* ErrorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E791B827242787004CE186 /* ErrorTypes.swift */; };
 		25E791BB2724365B004CE186 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E791BA2724365B004CE186 /* HomeViewModel.swift */; };
 		60C9D5C3DF1C3F0A6D045A75 /* Pods_VideoGamesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C6A0C53C8713E920FC940B /* Pods_VideoGamesTests.framework */; };
@@ -80,6 +81,7 @@
 		25AB03C127272BA100152880 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		25D166A62722E9A100AA21A3 /* GameHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHeader.swift; sourceTree = "<group>"; };
 		25D166A82722FFAD00AA21A3 /* HeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionViewCell.swift; sourceTree = "<group>"; };
+		25DF09F3272888A900BF300F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		25E791B827242787004CE186 /* ErrorTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTypes.swift; sourceTree = "<group>"; };
 		25E791BA2724365B004CE186 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		6B5400513FDBFFB00F547BE7 /* Pods-VideoGamesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoGamesTests.release.xcconfig"; path = "Target Support Files/Pods-VideoGamesTests/Pods-VideoGamesTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -144,8 +146,9 @@
 		2538AAFC2721FEF100B38F23 /* VideoGames */ = {
 			isa = PBXGroup;
 			children = (
-				25D166A32722D51000AA21A3 /* Util */,
+				25DF09F3272888A900BF300F /* GoogleService-Info.plist */,
 				2538AB0E2721FEF200B38F23 /* Info.plist */,
+				25D166A32722D51000AA21A3 /* Util */,
 				2538AB342722016D00B38F23 /* Support */,
 				2538AB332722016500B38F23 /* Network */,
 				2538AB322722015F00B38F23 /* ViewModel */,
@@ -277,6 +280,7 @@
 				2538AAF72721FEF100B38F23 /* Frameworks */,
 				2538AAF82721FEF100B38F23 /* Resources */,
 				7A65ECEA80BFEBA1428EF89B /* [CP] Embed Pods Frameworks */,
+				25CDB15427288A5A00B2B6A4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -376,6 +380,7 @@
 			files = (
 				2538AB0D2721FEF200B38F23 /* LaunchScreen.storyboard in Resources */,
 				2538AB0A2721FEF200B38F23 /* Assets.xcassets in Resources */,
+				25DF09F4272888A900BF300F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +439,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VideoGames-VideoGamesUITests/Pods-VideoGames-VideoGamesUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		25CDB15427288A5A00B2B6A4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n\n";
 		};
 		7A65ECEA80BFEBA1428EF89B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -692,6 +714,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6QZCS4YFDU;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VideoGames/Info.plist;
@@ -722,6 +745,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6QZCS4YFDU;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VideoGames/Info.plist;

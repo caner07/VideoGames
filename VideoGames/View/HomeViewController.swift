@@ -20,7 +20,7 @@ class HomeViewController: UIViewController {
         configureViewController()
         viewModel.delegate = self
         viewModel.getGames()
-        
+       
     }
     
     private func configureViewController(){
@@ -271,7 +271,6 @@ extension HomeViewController:GameHeaderDelegate{
     func didSelectGame(game: GamesModel?) {
         let vc = GameDetailsViewController(gameId: game?.id ?? 0,rating: game?.rating ?? 0.0 )
         navigationController?.pushViewController(vc, animated: true)
-    
     
     }
 }
