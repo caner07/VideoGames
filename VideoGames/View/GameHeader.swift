@@ -15,13 +15,15 @@ class GameHeader:UICollectionReusableView{
     
     static let gameHeaderIdentifier = "gameheader"
     var sliderCollectionView:UICollectionView!
+    var pageControl = UIPageControl()
     var headerGames = [GamesModel?]()
     var delegate:GameHeaderDelegate?
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        configureCollectionView()
+        configurePageControl()
     }
-    private func configure(){
+    private func configureCollectionView(){
         let width = self.bounds.width
         let height = self.bounds.height
         let flowLayout = UICollectionViewFlowLayout()
@@ -34,12 +36,29 @@ class GameHeader:UICollectionReusableView{
         sliderCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sliderCollectionView)
         sliderCollectionView.alwaysBounceHorizontal = true
-        
+        sliderCollectionView.showsHorizontalScrollIndicator = false
         
         
         sliderCollectionView.delegate = self
         sliderCollectionView.dataSource = self
         sliderCollectionView.register(HeaderCollectionViewCell.self, forCellWithReuseIdentifier: HeaderCollectionViewCell.headerCellId)
+    }
+    private func configurePageControl(){
+        pageControl.currentPage = 1
+        pageControl.numberOfPages = 3
+        pageControl.pageIndicatorTintColor = .systemGray4
+        pageControl.currentPageIndicatorTintColor = .label
+        pageControl.clipsToBounds = false
+        pageControl.layer.cornerRadius = 10
+        self.addSubview(pageControl)
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.isUserInteractionEnabled = false
+        pageControl.backgroundColor = .systemGray.withAlphaComponent(0.5)
+        pageControl.layer.zPosition = 1
+        NSLayoutConstraint.activate([
+            pageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            pageControl.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
+        ])
     }
     func set(games:[GamesModel?]){
         self.headerGames = games
@@ -65,6 +84,9 @@ extension GameHeader:UICollectionViewDelegate,UICollectionViewDataSource{
         
         let selectedGame = headerGames[indexPath.row]
         delegate?.didSelectGame(game: selectedGame)
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
     }
     
     
