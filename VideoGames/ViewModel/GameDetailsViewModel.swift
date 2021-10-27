@@ -75,7 +75,7 @@ class GameDetailsViewModel{
     }
     
     func sendViewingEvent(){
-        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+        Analytics.logEvent("game_details", parameters: [
             AnalyticsParameterItemID: "id-\(gameId!)",
             AnalyticsParameterItemName: gameDetails?.name!,
             AnalyticsParameterContentType: "cont",
