@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreData
-
+import Firebase
 protocol GameDetailsViewModelDelegate{
     func loading()
     func success()
@@ -28,8 +28,8 @@ class GameDetailsViewModel{
             switch(result){
             case .success(let response):
                 self.gameDetails = response
-                self.sendDetailEvent()
                 self.delegate?.success()
+                self.sendViewingEvent()
             case .failure(let error):
                 self.delegate?.error(error: error)
             }
@@ -68,9 +68,26 @@ class GameDetailsViewModel{
         item.rating = rating ?? 0.0
         do{
             try context.save()
+            sendAddedToFavoritesEvent()
         }catch let error{
             print(error.localizedDescription)
         }
+    }
+    
+    func sendViewingEvent(){
+        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+            AnalyticsParameterItemID: "id-\(gameId!)",
+            AnalyticsParameterItemName: gameDetails?.name!,
+            AnalyticsParameterContentType: "cont",
+        ])
+        print("send")
+    }
+    func sendAddedToFavoritesEvent(){
+        Analytics.logEvent("addedToFavorites", parameters: [
+            AnalyticsParameterItemID: "id-\(gameId!)",
+            AnalyticsParameterItemName: gameDetails?.name!,
+            AnalyticsParameterContentType: "cont"
+        ])
     }
     
     
