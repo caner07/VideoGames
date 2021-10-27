@@ -27,6 +27,8 @@ class FavoritesViewController: UIViewController {
         configureSearchBar()
         configureNotFoundLabel()
     }
+    
+    
     private func configureSearchBar(){
         searchBar = UISearchBar()
         searchBar.searchBarStyle = UISearchBar.Style.default
@@ -36,6 +38,8 @@ class FavoritesViewController: UIViewController {
         searchBar.delegate = self
         navigationItem.titleView = searchBar
     }
+    
+    
     private func configureNotFoundLabel(){
         notFoundLabel.textAlignment = .center
         notFoundLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)

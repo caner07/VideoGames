@@ -7,10 +7,9 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: LoadingViewController {
     var searchBar:UISearchBar!
     var gamesCollectionView : UICollectionView!
-    var containerView = UIView()
     var notFoundLabel = UILabel()
     private let refreshControl = UIRefreshControl()
     var isSearching = false
@@ -100,35 +99,6 @@ class HomeViewController: UIViewController {
         navigationItem.titleView = searchBar
     }
     
-    //MARK: - Loading
-    func showLoadingView() {
-        containerView = UIView(frame: view.bounds)
-        view.addSubview(containerView)
-        
-        containerView.backgroundColor = .systemBackground
-        containerView.alpha = 0
-        
-        UIView.animate(withDuration: 0.25) { self.containerView.alpha = 0.8 }
-        
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        containerView.addSubview(activityIndicator)
-        
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
-        ])
-        activityIndicator.startAnimating()
-    }
-    
-    func dismissLoadingView() {
-        DispatchQueue.main.async {
-            self.containerView.removeFromSuperview()
-            
-        }
-    }
-    
     
     //MARK: - Not Found
     func showNotFound(){
@@ -187,6 +157,7 @@ extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource
         self.searchBar.resignFirstResponder()
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         var selectedGame:GamesModel!
         if isSearching {
             selectedGame = viewModel.filteredGameList?[indexPath.row]
@@ -242,6 +213,7 @@ extension HomeViewController:HomeViewModelDelegate{
     }
     func success() {
         DispatchQueue.main.async {
+            
             self.dismissLoadingView()
             self.showGames()
             self.gamesCollectionView.reloadData()
@@ -270,7 +242,8 @@ extension HomeViewController:HomeViewModelDelegate{
 extension HomeViewController:GameHeaderDelegate{
     func didSelectGame(game: GamesModel?) {
         let vc = GameDetailsViewController(gameId: game?.id ?? 0,rating: game?.rating ?? 0.0 )
-        navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true)
+        
     
     }
 }

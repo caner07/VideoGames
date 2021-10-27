@@ -40,4 +40,5 @@ class HomeViewModel{
         
         delegate?.searchUpdate()
     }
+    
 }

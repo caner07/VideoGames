@@ -28,6 +28,7 @@ class GameDetailsViewModel{
             switch(result){
             case .success(let response):
                 self.gameDetails = response
+                self.sendDetailEvent()
                 self.delegate?.success()
             case .failure(let error):
                 self.delegate?.error(error: error)
@@ -71,4 +72,6 @@ class GameDetailsViewModel{
             print(error.localizedDescription)
         }
     }
+    
+    
 }

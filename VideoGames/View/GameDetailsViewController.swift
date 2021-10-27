@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GameDetailsViewController: UIViewController {
+class GameDetailsViewController: LoadingViewController {
     let scrollView = UIScrollView()
     let contentView = UIView()
     var gameImage = UIImageView()
@@ -15,7 +15,6 @@ class GameDetailsViewController: UIViewController {
     var releaseDateLabel = UILabel()
     var metacriticLabel = UILabel()
     var descriptionLabel = UILabel()
-    var containerView = UIView()
     
     var isLiked = false
     let viewModel = GameDetailsViewModel()
@@ -155,34 +154,6 @@ class GameDetailsViewController: UIViewController {
         guard let url = URL(string: gameDetails.imageUrl ?? "") else{return}
         gameImage.kf.indicatorType = .activity
         gameImage.kf.setImage(with: url)
-    }
-    
-    private func showLoadingView() {
-        containerView = UIView(frame: view.bounds)
-        view.addSubview(containerView)
-        
-        containerView.backgroundColor = .systemBackground
-        containerView.alpha = 0
-        
-        UIView.animate(withDuration: 0.25) { self.containerView.alpha = 0.8 }
-        
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        containerView.addSubview(activityIndicator)
-        
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
-        ])
-        activityIndicator.startAnimating()
-    }
-    
-    private func dismissLoadingView() {
-        DispatchQueue.main.async {
-            self.containerView.removeFromSuperview()
-            
-        }
     }
 
 }
